@@ -5,6 +5,7 @@ const bodyParser = require('koa-bodyparser');
 const fs = require('fs');
 const {resolve} = require('path');
 const handlerError = require(resolve(__dirname, 'utils/handleError.js'));
+const handleDate = require(resolve(__dirname, 'utils/handleDate.js'));
 const { getClientIP, getClientDevice} = require(resolve(__dirname, 'utils/getClientInfo.js'));
 
 const app = new Koa();
@@ -34,7 +35,9 @@ router.get('/', async (ctx, next) => {
   try{
     let ip = getClientIP(ctx.request);
     let device = getClientDevice(ctx.request);
-    console.log("来访IP：" + ip + ", 访问设备：" + device);
+    let timestamp = new Date().getTime();
+    let visitDate = handleDate(timestamp);
+    console.log("来访日期：" + visitDate + ", 来访IP：" + ip + ", 访问设备：" + device);
   }catch(e) {
     console.log(e);
   }

@@ -12,9 +12,14 @@ function getClientIP(req) {
 
 function getClientDevice(request) {
   let deviceAgent = request.headers && request.headers["user-agent"] && request.headers["user-agent"].toLowerCase();
-  let agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+  if (deviceAgent) {
+    let agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
 
-  return agentID ? 'mobile' : 'PC';
+    return agentID ? 'mobile' : 'PC';
+  } else {
+    return '未知设备';
+  }
+  
 }
 
 module.exports = {

@@ -28,6 +28,19 @@ const render = () => { // 读取首页
   })
 }
 
+const getJson = () => { // 获取json数据
+  return new Promise((resolve, reject) => {
+    fs.readFile('static/data.json', 'utf8', (err, data) => {
+      if (err) {
+        console.log(err)
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
 router.get('/', async (ctx, next) => {
   ctx.response.type = 'html';
   ctx.response.body = await render();
@@ -40,6 +53,18 @@ router.get('/', async (ctx, next) => {
     console.log("来访日期：" + visitDate + ", 来访IP：" + ip + ", 访问设备：" + device);
   }catch(e) {
     console.log(e);
+  }
+
+  next();
+})
+
+router.get('/home/getArticleList', async (ctx, next) => {
+  try {
+    ctx.set("Content-Type", "application/json");
+    let data = await getJson();
+    ctx.body = data;
+  } catch(error) {
+    console.log(error);
   }
 
   next();
